@@ -94,7 +94,14 @@ namespace TabloidMVC.Repositories
                 conn.Open();
                 using (var cmd = conn.CreateCommand())
                 {
-                    cmd.CommandText = @""
+                    cmd.CommandText = @"UPDATE Category
+                                        SET
+                                            [Name] = @name
+                                        WHERE Id = @id";
+
+                    cmd.Parameters.AddWithValue("@name", category.Name);
+
+                    cmd.ExecuteNonQuery();
                 }
 
             }
@@ -107,7 +114,12 @@ namespace TabloidMVC.Repositories
                 conn.Open();
                 using (var cmd = conn.CreateCommand())
                 {
+                    cmd.CommandText = @"DELETE FROM Category
+                                        WHERE Id = @id";
 
+                    cmd.Parameters.AddWithValue("@id", id);
+
+                    cmd.ExecuteNonQuery();
                 }
 
             }
