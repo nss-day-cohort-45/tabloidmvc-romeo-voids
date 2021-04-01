@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.VisualBasic;
+using System;
 using System.Security.Claims;
 using TabloidMVC.Models.ViewModels;
 using TabloidMVC.Repositories;
@@ -28,9 +29,9 @@ namespace TabloidMVC.Controllers
 
         public IActionResult MyIndex()
         {
-            int userId = GetCurrentUserProfileId();
-            var posts = _postRepository.GetPostByUserId(userId);
-            return View(posts);
+                int userProfileId = GetCurrentUserProfileId();
+                var posts = _postRepository.GetPostsByUserId(userProfileId);
+                return View(posts);
         }
 
         public IActionResult Details(int id)

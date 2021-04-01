@@ -132,7 +132,7 @@ namespace TabloidMVC.Repositories
             }
         }
 
-        public Post GetPostByUserId(int userProfileId)
+        public List<Post> GetPostsByUserId(int userProfileId)
         {
             using (var conn = Connection)
             {
@@ -153,24 +153,25 @@ namespace TabloidMVC.Repositories
                               LEFT JOIN Category c ON p.CategoryId = c.id
                               LEFT JOIN UserProfile u ON p.UserProfileId = u.id
                               LEFT JOIN UserType ut ON u.UserTypeId = ut.id
-                        WHERE p.UserProfileId = @userProfileId";
+                        WHERE p.UserProfileId = @userProfileId AND PublishDateTime < SYSDATETIME()";
 
                     cmd.Parameters.AddWithValue("@userProfileId", userProfileId);
                     var reader = cmd.ExecuteReader();
 
-                    Post post = null;
+                    var posts = new List<Post>();
 
-                    if (reader.Read())
+                    while (reader.Read())
                     {
-                        post = NewPostFromReader(reader);
+                        posts.Add(NewPostFromReader(reader));
                     }
 
                     reader.Close();
 
-                    return post;
+                    return posts;
                 }
             }
         }
+
 
 
         public void Add(Post post)
