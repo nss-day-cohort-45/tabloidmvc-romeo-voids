@@ -67,7 +67,7 @@ namespace TabloidMVC.Repositories
             }
         }
 
-        public void Add(Category category)
+        public void AddCategory(Category category)
         {
             using (var conn = Connection)
             {
@@ -100,6 +100,7 @@ namespace TabloidMVC.Repositories
                                         WHERE Id = @id";
 
                     cmd.Parameters.AddWithValue("@name", category.Name);
+                    cmd.Parameters.AddWithValue("@id", category.Id);
 
                     cmd.ExecuteNonQuery();
                 }
