@@ -4,6 +4,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.VisualBasic;
 using System;
 using System.Security.Claims;
+using TabloidMVC.Models;
 using TabloidMVC.Models.ViewModels;
 using TabloidMVC.Repositories;
 
@@ -21,12 +22,14 @@ namespace TabloidMVC.Controllers
             _categoryRepository = categoryRepository;
         }
 
+        //GET: Posts
         public IActionResult Index()
         {
             var posts = _postRepository.GetAllPublishedPosts();
             return View(posts);
         }
 
+        //GET: Posts by user
         public IActionResult MyIndex()
         {
                 int userProfileId = GetCurrentUserProfileId();
@@ -34,6 +37,7 @@ namespace TabloidMVC.Controllers
                 return View(posts);
         }
 
+        //GET: Post/Details/{id}
         public IActionResult Details(int id)
         {
             var post = _postRepository.GetPublishedPostById(id);
@@ -49,6 +53,7 @@ namespace TabloidMVC.Controllers
             return View(post);
         }
 
+        //GET: Post/Create
         public IActionResult Create()
         {
             var vm = new PostCreateViewModel();
@@ -56,6 +61,7 @@ namespace TabloidMVC.Controllers
             return View(vm);
         }
 
+        //POST: Post/Create
         [HttpPost]
         public IActionResult Create(PostCreateViewModel vm)
         {
@@ -76,10 +82,36 @@ namespace TabloidMVC.Controllers
             }
         }
 
+        //GET: Current user Id
         private int GetCurrentUserProfileId()
         {
             string id = User.FindFirstValue(ClaimTypes.NameIdentifier);
             return int.Parse(id);
+        }
+
+        // GET: Post/Delete/{id}
+        public ActionResult Delete(int id)
+        {
+            Post post = _postRepository.GetPublishedPostById(id);
+
+            return View(post);
+        }
+
+        //POST: Post/Delete/{id}
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Delete(int id, Post post)
+        {
+            try
+            {
+                _postRepository.DeletePost(id);
+
+                return RedirectToAction("Index");
+            }
+            catch(Exception ex)
+            {
+                return View(post);
+            }
         }
     }
 }
