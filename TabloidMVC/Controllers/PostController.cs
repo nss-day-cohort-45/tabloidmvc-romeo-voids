@@ -75,7 +75,7 @@ namespace TabloidMVC.Controllers
 
                 return RedirectToAction("Details", new { id = vm.Post.Id });
             } 
-            catch
+            catch(Exception ex)
             {
                 vm.CategoryOptions = _categoryRepository.GetAll();
                 return View(vm);
@@ -87,6 +87,35 @@ namespace TabloidMVC.Controllers
         {
             string id = User.FindFirstValue(ClaimTypes.NameIdentifier);
             return int.Parse(id);
+        }
+
+        //GET: Post/Edit/{id}
+        public ActionResult Edit(int id)
+        {
+            Post post = _postRepository.GetPublishedPostById(id);
+
+            if (post == null)
+            {
+                return NotFound();
+            }
+            return View(post);
+        }
+
+        //POST: Post/Edit/{id}
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Edit(int id, Post post)
+        {
+            try
+            {
+                _postRepository.UpdatePost(post);
+
+                return RedirectToAction("Index");
+            }
+            catch(Exception ex)
+            {
+                return View( );
+            }
         }
 
         // GET: Post/Delete/{id}
