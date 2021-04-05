@@ -5,93 +5,104 @@ using Microsoft.VisualBasic;
 using System.Security.Claims;
 using TabloidMVC.Models.ViewModels;
 using TabloidMVC.Repositories;
+using TabloidMVC.Models;
+using System;
 
 namespace TabloidMVC.Controllers
 {
     [Authorize]
     public class CategoryController : Controller
     {
-        private readonly ICategoryRepository _categoryRepository;
+        private readonly ICategoryRepository _categoryRepo;
 
         public CategoryController(ICategoryRepository categoryRepository)
         {
-            _categoryRepository = categoryRepository;
+            _categoryRepo = categoryRepository;
         }
 
         // GET: CategoryController
         public ActionResult Index()
         {
-            var categories = _categoryRepository.GetAll();
+            var categories = _categoryRepo.GetAll();
             return View(categories);
         }
 
-        //// GET: CategoryController/Details/5
-        //public ActionResult Details(int id)
-        //{
-        //    return View();
-        //}
+        // GET: CategoryController/Create
+        public ActionResult Create()
+        {
+            return View();
+        }
 
-        //// GET: CategoryController/Create
-        //public ActionResult Create()
-        //{
-        //    return View();
-        //}
+        // POST: CategoryController/Create
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Create(Category category)
+        {
+            try
+            {
+                _categoryRepo.AddCategory(category);
 
-        //// POST: CategoryController/Create
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public ActionResult Create(IFormCollection collection)
-        //{
-        //    try
-        //    {
-        //        return RedirectToAction(nameof(Index));
-        //    }
-        //    catch
-        //    {
-        //        return View();
-        //    }
-        //}
+                return RedirectToAction(nameof(Index));
+            }
+            catch (Exception ex)
+            {
+                return View(category);
+            }
+        }
 
-        //// GET: CategoryController/Edit/5
-        //public ActionResult Edit(int id)
-        //{
-        //    return View();
-        //}
+        // GET: CategoryController/Edit/5
+        public ActionResult Edit(int id)
+        {
+            Category category = _categoryRepo.GetCategoryById(id);
 
-        //// POST: CategoryController/Edit/5
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public ActionResult Edit(int id, IFormCollection collection)
-        //{
-        //    try
-        //    {
-        //        return RedirectToAction(nameof(Index));
-        //    }
-        //    catch
-        //    {
-        //        return View();
-        //    }
-        //}
+            if (category == null)
+            {
+                return NotFound();
+            }
 
-        //// GET: CategoryController/Delete/5
-        //public ActionResult Delete(int id)
-        //{
-        //    return View();
-        //}
+            return View(category);
+        }
 
-        //// POST: CategoryController/Delete/5
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public ActionResult Delete(int id, IFormCollection collection)
-        //{
-        //    try
-        //    {
-        //        return RedirectToAction(nameof(Index));
-        //    }
-        //    catch
-        //    {
-        //        return View();
-        //    }
-        //} 
+        // POST: CategoryController/Edit/5
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Edit(int id, Category category)
+        {
+            try
+            {
+                _categoryRepo.UpdateCategory(category);
+
+                return RedirectToAction("Index");
+            }
+            catch (Exception ex)
+            {
+                return View(category);
+            }
+        }
+
+        // GET: CategoryController/Delete/5
+        public ActionResult Delete(int id)
+        {
+            Category category = _categoryRepo.GetCategoryById(id);
+
+            return View(category);
+        }
+
+        // POST: CategoryController/Delete/5
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Delete(int id, Category category)
+        {
+            try
+            {
+                _categoryRepo.DeleteCategory(id);
+
+                return RedirectToAction("Index");
+            }
+            catch
+            {
+                return View(category);
+            }
+        } 
     }
 }
