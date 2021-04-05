@@ -9,7 +9,7 @@ namespace TabloidMVC.Repositories
     public interface IPostTagRepository
     {
         List<PostTag> GetAllPostTagsByPostId(int postId);
-        void AddPostTag(PostTag postTag);
-        void DeletePostTag(PostTag postTag);
+        //void AddPostTag(PostTag postTag);
+        //void DeletePostTag(PostTag postTag);
     }
 }

@@ -17,12 +17,13 @@ namespace TabloidMVC.Repositories
                 conn.Open();
                 using (var cmd = conn.CreateCommand())
                 {
-                    cmd.CommandText = @"
-                       SELECT Id, [Name]
-                         FROM Tag
-                        WHERE id = @id";
+                    cmd.CommandText = @" SELECT pt.Id, pt.PostId, pt.TagId, p.Title, t.[Name] as 'Tag Name'
+                        FROM PostTag pt
+                        JOIN Post p on pt.PostId = p.Id
+                        JOIN Tag t on pt.TagId = t.Id
+                        WHERE p.Id = @postId;";
 
-                    cmd.Parameters.AddWithValue("@id", id);
+                    cmd.Parameters.AddWithValue("@id", postId);
                     var reader = cmd.ExecuteReader();
 
                     List<PostTag> postTags = new List<PostTag>();
@@ -42,7 +43,7 @@ namespace TabloidMVC.Repositories
                 }
             }
         }
-        public void AddPostTag(PostTag postTag);
-        public void DeletePostTag(PostTag postTag);
+        // public void AddPostTag(PostTag postTag);
+        // public void DeletePostTag(PostTag postTag);
     }
 }
