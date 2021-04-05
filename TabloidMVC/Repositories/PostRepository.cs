@@ -172,8 +172,6 @@ namespace TabloidMVC.Repositories
             }
         }
 
-
-
         public void Add(Post post)
         {
             using (var conn = Connection)
@@ -266,6 +264,26 @@ namespace TabloidMVC.Repositories
 
                     cmd.ExecuteNonQuery();
                 }
+            }
+        }
+
+        public void ReplacePostCategory(Post post, Category category)
+        {
+            using (var conn = Connection)
+            {
+                conn.Open();
+                using (var cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = @"UPDATE Category
+                                        SET Post.CategoryId = @unassignedId
+                                        WHERE Post.CategoryId = @id";
+
+                    cmd.Parameters.AddWithValue("@unassignedId", category.Id);
+                    cmd.Parameters.AddWithValue("@id", post.CategoryId);
+
+                    cmd.ExecuteNonQuery();
+                }
+
             }
         }
 
