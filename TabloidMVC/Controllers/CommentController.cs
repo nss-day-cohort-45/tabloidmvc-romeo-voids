@@ -81,5 +81,35 @@ namespace TabloidMVC.Controllers
                 return View(comment);
             }
         }
+
+        //GET: Comments/Edit/5
+        public ActionResult Edit(int id)
+        {
+            Comment comment = _commentRepository.GetCommentById(id); 
+
+            if (comment == null)
+            {
+                return NotFound();
+            }
+
+            return View(comment);
+        }
+
+        //POST: Comments/Edit/5
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Edit(int id, Comment comment)
+        {
+            try
+            {
+                _commentRepository.EditComment(comment);
+
+                return RedirectToAction("Index");
+            }
+            catch
+            {
+                return View(comment);
+            }
+        }
     }
 }

@@ -11,7 +11,7 @@ namespace TabloidMVC.Repositories
         void Add(Comment comment);
         void DeleteComment(int id);
 
-        //void EditComment(Comment comment);
-     
+        void EditComment(Comment comment);
+
     }
 }
