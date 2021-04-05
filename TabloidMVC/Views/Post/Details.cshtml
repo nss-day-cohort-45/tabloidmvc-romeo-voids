@@ -39,5 +39,7 @@
     </div>
 </div>
 
-<input type="button" value="Tag Management" onclick="location.href='@Url.Action("Edit", "PostTag", new {id = Model.Id })'" class="btn btn-primary" />
-<input type="button" value="Add Comment" onclick="location.href='@Url.Action("", "")'" class="btn btn-primary" />
+@*<input type="button" value="Tag Management" onclick="location.href='@Url.Action("Edit", "PostTag", new {id = Model.Id })'" class="btn btn-primary" />*@
+
+<input type="button" value="Add Comment" onclick="location.href='@Url.Action("Create", "Comment", new { id = Model.Id })'" class="btn btn-primary" />
+
