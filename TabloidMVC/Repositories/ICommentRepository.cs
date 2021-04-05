@@ -5,9 +5,13 @@ namespace TabloidMVC.Repositories
 {
     public interface ICommentRepository
     {
+        List<Comment> GetAllComments();
+        Comment GetCommentById(int id);
+
         void Add(Comment comment);
-        List<Comment> GetAllPublishedComments();
-        Post GetPublishedCommentById(int id);
-        Post GetUserCommentById(int id, int userProfileId);
+        void DeleteComment(int id);
+
+        //void EditComment(Comment comment);
+     
     }
 }

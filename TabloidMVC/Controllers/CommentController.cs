@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.VisualBasic;
 using System.Security.Claims;
-using TabloidMVC.Models.ViewModels;
+using TabloidMVC.Models;
 using TabloidMVC.Repositories;
 
 namespace TabloidMVC.Controllers
@@ -24,59 +24,62 @@ namespace TabloidMVC.Controllers
         //GET: CommentController
         public IActionResult Index()
         {
-            var comments = _commentRepository.GetAllPublishedComments();
+            var comments = _commentRepository.GetAllComments();
             return View(comments);
         }
 
-        //GET: CommentController/Details/2
-        public IActionResult Details(int id)
-        {
-            var comment = _commentRepository.GetPublishedCommentById(id);
-            if (comment == null)
-            {
-                int userId = GetCurrentUserProfileId();
-                comment = _commentRepository.GetUserCommentById(id, userId);
-                if (comment == null)
-                {
-                    return NotFound();
-                }
-            }
-            return View(comment);
-        }
+
 
         //GET: CommentController/Create
         public IActionResult Create()
         {
-            var vm = new CommentCreateViewModel();
-            vm.CategoryOptions = _categoryRepository.GetAll();
-            return View(vm);
+     
+            return View();
         }
 
         //POST: CommentController/Create
         [HttpPost]
-        public IActionResult Create(CommentCreateViewModel vm)
+        public IActionResult Create(Comment comment)
         {
             try
             {
-                vm.Comment.CreateDateTime = DateAndTime.Now;
-                vm.Comment.IsApproved = true;
-                vm.Comment.UserProfileId = GetCurrentUserProfileId();
+                comment.CreateDateTime = DateAndTime.Now;
+          
+                _commentRepository.Add(comment);
 
-                _commentRepository.Add(vm.Comment);
-
-                return RedirectToAction("Details", new { id = vm.Comment.Id });
+                return RedirectToAction("Index");
             }
             catch
             {
-                vm.CategoryOptions = _categoryRepository.GetAll();
-                return View(vm);
+
+                return View(comment);
             }
         }
 
-        private int GetCurrentUserProfileId()
+
+        //GET: Comments/Delete/5
+        public ActionResult Delete(int id)
         {
-            string id = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            return int.Parse(id);
+            Comment comment = _commentRepository.GetCommentById(id);
+
+            return View(comment);
+        }
+
+        //POST: Comments/Delete/5
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Delete(int id, Comment comment)
+        {
+            try
+            {
+                _commentRepository.DeleteComment(id);
+
+                return RedirectToAction("Index");
+            }
+            catch
+            {
+                return View(comment);
+            }
         }
     }
 }
