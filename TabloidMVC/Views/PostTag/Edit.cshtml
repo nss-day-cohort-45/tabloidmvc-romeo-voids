@@ -15,13 +15,13 @@
                 </div>
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                 <div class="form-group">
-                        @foreach (var tag in Model.TagOptions)
-                        {
-                        <input type="checkbox" id ="tag.Id" name=" tag.Id" value="tag.Name" />
+                    @foreach (var tag in Model.TagOptions)
+                    {
+                        <input id="tag.Id" name="tag.Id" type="checkbox" value="@tag.Id">
+                        @Html.Label(tag.Name)
                         <br />
-                        }
-
-                    <span asp-validation-for="Post.CategoryId" class="text-danger"></span>
+                    }
+                <span asp-validation-for="PostTag.TagId" class="text-danger"></span>
                 </div>
                 <div class="form-group">
                     <input type="submit" value="Save" class="btn btn-primary" />
@@ -39,44 +39,46 @@
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }
 
+
+
 @*@model TabloidMVC.Models.ViewModels.PostTagFormViewModel
 
-@{
-    ViewData["Title"] = "Edit";
-}
+    @{
+        ViewData["Title"] = "Edit";
+    }
 
-<h1>Edit</h1>
+    <h1>Edit</h1>
 
-<h4>PostTag</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Edit">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <input asp-for="Post.Id" type="hidden" />
-            </div>
-            <div class="form-group">
-                <label asp-for="PostId" class="control-label"></label>
-                <input asp-for="PostId" class="form-control" />
-                <span asp-validation-for="PostId" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="TagId" class="control-label"></label>
-                <input asp-for="TagId" class="form-control" />
-                <span asp-validation-for="TagId" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
-            </div>
-        </form>
+    <h4>PostTag</h4>
+    <hr />
+    <div class="row">
+        <div class="col-md-4">
+            <form asp-action="Edit">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div class="form-group">
+                    <input asp-for="Post.Id" type="hidden" />
+                </div>
+                <div class="form-group">
+                    <label asp-for="PostId" class="control-label"></label>
+                    <input asp-for="PostId" class="form-control" />
+                    <span asp-validation-for="PostId" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="TagId" class="control-label"></label>
+                    <input asp-for="TagId" class="form-control" />
+                    <span asp-validation-for="TagId" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <input type="submit" value="Save" class="btn btn-primary" />
+                </div>
+            </form>
+        </div>
     </div>
-</div>
 
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
+    <div>
+        <a asp-action="Index">Back to List</a>
+    </div>
 
-@section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-}*@
+    @section Scripts {
+        @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    }*@
