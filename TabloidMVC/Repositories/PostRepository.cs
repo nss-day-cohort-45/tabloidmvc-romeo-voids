@@ -250,7 +250,6 @@ namespace TabloidMVC.Repositories
                     cmd.CommandText = @"
                             UPDATE Post
                             SET 
-                                [Name] = @name, 
                                 Title = @title, 
                                 Content = @content, 
                                 ImageLocation = @imageLocation, 
@@ -263,6 +262,9 @@ namespace TabloidMVC.Repositories
                     cmd.Parameters.AddWithValue("@ImageLocation", DbUtils.ValueOrDBNull(post.ImageLocation));
                     cmd.Parameters.AddWithValue("@PublishDateTime", DbUtils.ValueOrDBNull(post.PublishDateTime));
                     cmd.Parameters.AddWithValue("@CategoryId", post.CategoryId);
+                    cmd.Parameters.AddWithValue("@id", post.Id);
+
+                    cmd.ExecuteNonQuery();
                 }
             }
         }
