@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.VisualBasic;
+using System;
 using System.Security.Claims;
 using TabloidMVC.Models;
 using TabloidMVC.Repositories;
@@ -31,10 +32,14 @@ namespace TabloidMVC.Controllers
 
 
         //GET: CommentController/Create
-        public IActionResult Create()
+        //id parameter will match id from URL (will be id of post)
+        public IActionResult Create(int id)
         {
-     
-            return View();
+            Comment comment = new Comment
+            {
+                PostId = id
+            };
+            return View(comment);
         }
 
         //POST: CommentController/Create
@@ -44,16 +49,25 @@ namespace TabloidMVC.Controllers
             try
             {
                 comment.CreateDateTime = DateAndTime.Now;
+                comment.UserProfileId = GetCurrentUserProfileId();
           
                 _commentRepository.Add(comment);
 
                 return RedirectToAction("Index");
             }
-            catch
+            catch(Exception ex)
             {
-
+                Console.WriteLine(ex.Message);
                 return View(comment);
+                
             }
+        }
+
+        //GET: current user id
+        private int GetCurrentUserProfileId()
+        {
+            string id = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            return int.Parse(id);
         }
 
 

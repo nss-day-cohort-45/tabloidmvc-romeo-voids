@@ -14,3 +14,15 @@ VALUES (1, 1, 1, 'Post 1', 'Comment Test', '4/2/2021')
 SET IDENTITY_INSERT [Comment] OFF
 
 SELECT * FROM Comment
+
+
+SET IDENTITY_INSERT [Comment] ON
+   INSERT INTO Comment (
+                             PostId, UserProfileId, Subject, Content, CreateDateTime)
+                        OUTPUT INSERTED.ID
+                        VALUES (
+                             1, 1, 'math', 'is power', '4/5/2021')
+                            SET IDENTITY_INSERT [Comment] OFF
+
+
+SELECT * FROM Post
