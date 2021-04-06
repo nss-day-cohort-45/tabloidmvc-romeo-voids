@@ -17,23 +17,22 @@
                 <div class="form-group">
                     @foreach (var tag in Model.TagOptions)
                     {
-                        <input id="tag.Id" name="tag.Id" type="checkbox" value="@tag.Id">
-                        @Html.Label(tag.Name)
-                        <span asp-validation-for="PostTag.TagId" class="text-danger"></span>
-                        <br />
+                        Boolean isChecked = @Model.PostTags.Any(pt => pt.TagId == tag.Id);
 
-                        @foreach (var postTag in Model.PostTags)
+                        if (isChecked)
                         {
-                            if (postTag.Id == tag.Id)
-                            {
-
                             <input id="tag.Id" name="tag.Id" type="checkbox" value="@tag.Id" checked>
-                          @Html.Label(tag.Name)
-                          <span asp-validation-for="PostTag.TagId" class="text-danger"></span>
-                          <br />
-
-                            }
+                            @Html.Label(tag.Name)
+                            <span asp-validation-for="PostTag.TagId" class="text-danger"></span>
+                            <br />
                         }
+                        else
+                        {
+                            <input id="tag.Id" name="tag.Id" type="checkbox" value="@tag.Id" unchecked>
+                            @Html.Label(tag.Name)
+                            <span asp-validation-for="PostTag.TagId" class="text-danger"></span>
+                            <br />
+                        };
                     }
                 </div>
                 <div class="form-group">
