@@ -80,6 +80,10 @@ namespace TabloidMVC.Controllers
         {
             try
             {
+                // Need to delete existing postTag tables
+                
+                // Make new postTag tables with info from the form
+
                 return RedirectToAction(nameof(Index));
             }
             catch

@@ -43,7 +43,7 @@
     </div>
 
     <div>
-        <a asp-action="Index">Back to List</a>
+        <input type="button" value="Back To List" onclick="location.href='@Url.Action("Details", "Post", new { id = Model.Post.Id })'" class="btn btn-primary" />
     </div>
 </div>
 
