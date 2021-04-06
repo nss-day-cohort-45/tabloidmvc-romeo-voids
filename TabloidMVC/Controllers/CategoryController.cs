@@ -96,11 +96,12 @@ namespace TabloidMVC.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Delete(int id, Category category)
         {
-            if (id != 15)
+            Category unassigned = _categoryRepo.GetUnassignedCategory();
+
+            if (id != unassigned.Id)
             {
                 try
                 {
-                    Category unassigned = _categoryRepo.GetUnassignedCategory();
 
                     _postRepo.ReplacePostCategory(id, unassigned);
                     _categoryRepo.DeleteCategory(id);
