@@ -45,6 +45,8 @@ namespace TabloidMVC.Repositories
                                 Name = reader.GetString(reader.GetOrdinal("UserTypeName"))
                             },
                         };
+
+                        userProfiles.Add(userProfile);
                     }
                     reader.Close();
                     return userProfiles;
