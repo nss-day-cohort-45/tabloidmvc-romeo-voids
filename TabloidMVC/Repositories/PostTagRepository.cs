@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using Microsoft.Data.SqlClient;
+using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -50,7 +51,41 @@ namespace TabloidMVC.Repositories
                 }
             }
         }
-        // public void AddPostTag(PostTag postTag);
-        // public void DeletePostTag(PostTag postTag);
+
+        public void AddPostTag(PostTag postTag)
+        {
+            using (var conn = Connection)
+            {
+                conn.Open();
+                using (var cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = @"
+                        INSERT INTO PostTag ( PostId, TagId )
+                        OUTPUT INSERTED.ID
+                        VALUES ( @PostId, @TagId )";
+                    cmd.Parameters.AddWithValue("@PostId", postTag.PostId);
+                    cmd.Parameters.AddWithValue("@TagId", postTag.TagId);
+
+                    postTag.Id = (int)cmd.ExecuteScalar();
+                }
+            }
+        }
+        public void DeletePostTag(int postId)
+        {
+            using (SqlConnection conn = Connection)
+            {
+                conn.Open();
+
+                using (SqlCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = "DELETE FROM PostTag WHERE PostId = @PostId";
+
+                    cmd.Parameters.AddWithValue("@PostId", postId);
+
+                    cmd.ExecuteNonQuery();
+                }
+            }
+        }
     }
 }
+

@@ -76,19 +76,33 @@ namespace TabloidMVC.Controllers
         // POST: PostTagController/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, PostCreateViewModel vm)
+        public ActionResult Edit(int id, PostTagFormViewModel vm)
         {
             try
             {
                 // Need to delete existing postTag tables
-                
+                var postId = id;
+                var PostTags = _postTagRepository.GetAllPostTagsByPostId(postId);
+
+                foreach (var postTag in PostTags)
+                {
+                    _postTagRepository.DeletePostTag(postId);
+                }
+
+                var NewPostTags = vm.PostTags;
+
+                foreach (var postTag in NewPostTags)
+
+                _postTagRepository.AddPostTag(postTag);
+
                 // Make new postTag tables with info from the form
 
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("Details", new { id = vm.Post.Id });
             }
             catch
             {
-                return View();
+                vm.TagOptions = _tagRepository.GetAllTags();
+                return View(vm);
             }
         }
 
