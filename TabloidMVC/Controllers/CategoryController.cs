@@ -101,16 +101,10 @@ namespace TabloidMVC.Controllers
                 try
                 {
                     Category unassigned = _categoryRepo.GetUnassignedCategory();
-                    List<Post> posts = _postRepo.GetAllPublishedPosts();
 
-                    foreach (Post post in posts)
-                    {
-                        if (post.CategoryId == id)
-                        {
-                            _postRepo.ReplacePostCategory(post, unassigned);
-                        };
-                        _categoryRepo.DeleteCategory(id);
-                    }
+                    _postRepo.ReplacePostCategory(id, unassigned);
+                    _categoryRepo.DeleteCategory(id);
+                
                     return RedirectToAction("Index");
                 }
                 catch

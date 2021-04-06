@@ -267,19 +267,19 @@ namespace TabloidMVC.Repositories
             }
         }
 
-        public void ReplacePostCategory(Post post, Category category)
+        public void ReplacePostCategory(int id, Category category)
         {
             using (var conn = Connection)
             {
                 conn.Open();
                 using (var cmd = conn.CreateCommand())
                 {
-                    cmd.CommandText = @"UPDATE Category
+                    cmd.CommandText = @"UPDATE Post
                                         SET Post.CategoryId = @unassignedId
                                         WHERE Post.CategoryId = @id";
 
                     cmd.Parameters.AddWithValue("@unassignedId", category.Id);
-                    cmd.Parameters.AddWithValue("@id", post.CategoryId);
+                    cmd.Parameters.AddWithValue("@id", id);
 
                     cmd.ExecuteNonQuery();
                 }
