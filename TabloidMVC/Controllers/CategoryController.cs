@@ -7,6 +7,7 @@ using TabloidMVC.Models.ViewModels;
 using TabloidMVC.Repositories;
 using TabloidMVC.Models;
 using System;
+using System.Collections.Generic;
 
 namespace TabloidMVC.Controllers
 {
@@ -14,10 +15,12 @@ namespace TabloidMVC.Controllers
     public class CategoryController : Controller
     {
         private readonly ICategoryRepository _categoryRepo;
+        private readonly IPostRepository _postRepo;
 
-        public CategoryController(ICategoryRepository categoryRepository)
+        public CategoryController(ICategoryRepository categoryRepository, IPostRepository postRepository)
         {
             _categoryRepo = categoryRepository;
+            _postRepo = postRepository;
         }
 
         // GET: CategoryController
@@ -93,13 +96,24 @@ namespace TabloidMVC.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Delete(int id, Category category)
         {
-            try
-            {
-                _categoryRepo.DeleteCategory(id);
+            Category unassigned = _categoryRepo.GetUnassignedCategory();
 
-                return RedirectToAction("Index");
-            }
-            catch
+            if (id != unassigned.Id)
+            {
+                try
+                {
+
+                    _postRepo.ReplacePostCategory(id, unassigned);
+                    _categoryRepo.DeleteCategory(id);
+                
+                    return RedirectToAction("Index");
+                }
+                catch
+                {
+                    return View(category);
+                }
+            } 
+            else
             {
                 return View(category);
             }
