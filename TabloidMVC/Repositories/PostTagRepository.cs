@@ -23,7 +23,7 @@ namespace TabloidMVC.Repositories
                         JOIN Tag t on pt.TagId = t.Id
                         WHERE p.Id = @postId;";
 
-                    cmd.Parameters.AddWithValue("@id", postId);
+                    cmd.Parameters.AddWithValue("@postId", postId);
                     var reader = cmd.ExecuteReader();
 
                     List<PostTag> postTags = new List<PostTag>();

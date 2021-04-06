@@ -19,9 +19,22 @@
                     {
                         <input id="tag.Id" name="tag.Id" type="checkbox" value="@tag.Id">
                         @Html.Label(tag.Name)
+                        <span asp-validation-for="PostTag.TagId" class="text-danger"></span>
                         <br />
+
+                        @foreach (var postTag in Model.PostTags)
+                        {
+                            if (postTag.Id == tag.Id)
+                            {
+
+                            <input id="tag.Id" name="tag.Id" type="checkbox" value="@tag.Id" checked>
+                          @Html.Label(tag.Name)
+                          <span asp-validation-for="PostTag.TagId" class="text-danger"></span>
+                          <br />
+
+                            }
+                        }
                     }
-                <span asp-validation-for="PostTag.TagId" class="text-danger"></span>
                 </div>
                 <div class="form-group">
                     <input type="submit" value="Save" class="btn btn-primary" />
@@ -38,47 +51,3 @@
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }
-
-
-
-@*@model TabloidMVC.Models.ViewModels.PostTagFormViewModel
-
-    @{
-        ViewData["Title"] = "Edit";
-    }
-
-    <h1>Edit</h1>
-
-    <h4>PostTag</h4>
-    <hr />
-    <div class="row">
-        <div class="col-md-4">
-            <form asp-action="Edit">
-                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                <div class="form-group">
-                    <input asp-for="Post.Id" type="hidden" />
-                </div>
-                <div class="form-group">
-                    <label asp-for="PostId" class="control-label"></label>
-                    <input asp-for="PostId" class="form-control" />
-                    <span asp-validation-for="PostId" class="text-danger"></span>
-                </div>
-                <div class="form-group">
-                    <label asp-for="TagId" class="control-label"></label>
-                    <input asp-for="TagId" class="form-control" />
-                    <span asp-validation-for="TagId" class="text-danger"></span>
-                </div>
-                <div class="form-group">
-                    <input type="submit" value="Save" class="btn btn-primary" />
-                </div>
-            </form>
-        </div>
-    </div>
-
-    <div>
-        <a asp-action="Index">Back to List</a>
-    </div>
-
-    @section Scripts {
-        @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-    }*@

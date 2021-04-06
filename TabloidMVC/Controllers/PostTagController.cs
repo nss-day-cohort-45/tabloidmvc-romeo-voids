@@ -63,6 +63,9 @@ namespace TabloidMVC.Controllers
             vm.TagOptions = _tagRepository.GetAllTags();
             vm.Post = _postRepository.GetPublishedPostById(id);
 
+            var postId = id;
+            vm.PostTags = _postTagRepository.GetAllPostTagsByPostId(postId); 
+
             if (vm == null)
             {
                 return NotFound();
