@@ -80,30 +80,39 @@ namespace TabloidMVC.Controllers
         {
             try
             {
-                // Need to delete existing postTag tables
-                var postId = id;
-                var PostTags = _postTagRepository.GetAllPostTagsByPostId(postId);
-
-                foreach (var postTag in PostTags)
-                {
-                    _postTagRepository.DeletePostTag(postId);
-                }
-
-                var NewPostTags = vm.PostTags;
-
-                foreach (var postTag in NewPostTags)
-
-                _postTagRepository.AddPostTag(postTag);
-
-                // Make new postTag tables with info from the form
-
-                return RedirectToAction("Details", new { id = vm.Post.Id });
+                return RedirectToAction(nameof(Index));
             }
             catch
             {
-                vm.TagOptions = _tagRepository.GetAllTags();
-                return View(vm);
+                return View();
             }
+            //try
+            //{
+            //    // Need to delete existing postTag tables
+            //    var postId = id;
+            //    var OldPostTags = _postTagRepository.GetAllPostTagsByPostId(postId);
+
+            //    foreach (var postTag in OldPostTags)
+            //    {
+            //        _postTagRepository.DeletePostTag(postId);
+            //    }
+
+            //    // Need to get a list of all the checked tags and use the tagIds to make new postTag entries in the DB
+            //    var NewPostTags = vm.PostTags;
+
+            //    foreach (var postTag in NewPostTags)
+
+            //    _postTagRepository.AddPostTag(postTag);
+
+
+
+            //    return RedirectToAction("Details", new { id = vm.Post.Id });
+            //}
+            //catch
+            //{
+            //    vm.TagOptions = _tagRepository.GetAllTags();
+            //    return View(vm);
+            //}
         }
 
         // GET: PostTagController/Delete/5
